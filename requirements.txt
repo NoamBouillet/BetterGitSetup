@@ -1,0 +1,6 @@
+requests
+python-dotenv
+PyGithub
+typer[all]
+GitPython
+dotenv
