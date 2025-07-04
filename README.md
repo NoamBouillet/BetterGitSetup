@@ -1,8 +1,8 @@
-# BetterGit 🛠️
+# BetterGitSetup
 
-BetterGit is a CLI tool that helps you automate GitHub repository duplication, setup, and lightweight ticketing-like workflows.
+BetterGitSetup is a CLI tool that helps you automate GitHub repository duplication, setup, and lightweight ticketing-like workflows.
 
-## 🔧 Features
+## Features
 - Duplicate a GitHub repository (push all branches)
 - Copy collaborators from the original repository automatically
 - Setup GitHub Actions by copying a workflow YAML file
@@ -10,24 +10,24 @@ BetterGit is a CLI tool that helps you automate GitHub repository duplication, s
 - Add Git tags
 - Protect branches (main, dev) with PR review requirements
 
-## 🚀 Requirements
+## Requirements
 - Python 3.8+
 - A GitHub **Personal Access Token** (PAT) with `repo`, `admin:repo_hook`, `write:org`, and `workflow` scopes
 
-## 📦 Installation
+## Installation
 ```bash
 pip install -r requirements.txt
 ```
 
-## 🗂️ Folder Structure
+## Folder Structure
 ```
 bettergit/
-├── main.py
+├── setup.py
 ├── .env.example
 ├── safety.yml
 ```
 
-## 📁 Setup
+## Setup
 1. Copy `.env.example` to `.env` and add your GitHub token:
 ```bash
 cp .env.example .env
@@ -38,7 +38,7 @@ cp .env.example .env
 GITHUB_TOKEN=ghp_your_personal_token_here
 ```
 
-## 🔐 How to Get a GitHub Token
+## How to Get a GitHub Token
 1. Go to [https://github.com/settings/tokens](https://github.com/settings/tokens)
 2. Click **"Generate new token (classic)"**
 3. Set expiration and scopes:
@@ -48,25 +48,25 @@ GITHUB_TOKEN=ghp_your_personal_token_here
    - ✅ `write:org`
 4. Copy and store your token securely (you won't see it again!)
 
-## 🔑 GitHub Secrets to Set (on the duplicated repo)
+## GitHub Secrets to Set (on the duplicated repo)
 After duplication, make sure to set these secrets in the **new repository's** Settings > Secrets:
 - `GIT_SSH_PRIVATE_KEY` → Your private SSH key (for repo mirroring)
 - (Optional) `EXECUTABLES` → Comma-separated names of executables for the `make` check
 
-## 🧪 Usage
+## Usage
 ```bash
-python main.py https://github.com/username/original-repo new-repo-name
+python setup.py https://github.com/username/original-repo new-repo-name
 ```
 
-## 🏷️ Labels
+## Labels
 Automatically adds the following labels to the new repo:
 - `HELP`
 - `priority: critical | high | medium | low`
 - `type: bug | enhancement | feature request | documentation | question | discussion | complex`
 
-## 🛡️ Protections
+## Protections
 - Sets up **branch protection** on `main` and `dev`
 - Requires **all collaborators to approve** PRs before merging into `main` and `dev`
 
-## 📜 License
+## License
 MIT License
