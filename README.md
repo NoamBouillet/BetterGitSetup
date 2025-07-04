@@ -24,8 +24,7 @@ pip install -r requirements.txt
 bettergit/
 ├── main.py
 ├── .env.example
-├── workflow_templates/
-│   └── safety.yml
+├── safety.yml
 ```
 
 ## 📁 Setup
@@ -56,10 +55,7 @@ After duplication, make sure to set these secrets in the **new repository's** Se
 
 ## 🧪 Usage
 ```bash
-python main.py duplicate-repo \
-  --original-url https://github.com/username/original-repo \
-  --new-name my-duplicated-repo \
-  --tag v1.0.0
+python main.py https://github.com/username/original-repo new-repo-name
 ```
 
 ## 🏷️ Labels
