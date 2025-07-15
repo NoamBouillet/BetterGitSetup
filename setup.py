@@ -4,6 +4,7 @@ import tempfile
 from git import Repo
 from github import Github
 from dotenv import load_dotenv
+from urllib.parse import urlparse, urlunparse
 
 load_dotenv()
 
@@ -12,7 +13,11 @@ if not token:
     raise ValueError("GITHUB_TOKEN not found in environment.")
 
 def authenticated_url(original_url):
-    return original_url.replace("https://", f"https://{token}@")
+    parsed = urlparse(original_url)
+    if parsed.scheme != "https":
+        raise ValueError("Only HTTPS URLs are supported for authentication.")
+    netloc = f"{token}@{parsed.netloc}"
+    return urlunparse(parsed._replace(netloc=netloc))
 
 def duplicate_repo(original_url, new_name, tag=None):
     tmp_dir = tempfile.mkdtemp()
@@ -24,12 +29,15 @@ def duplicate_repo(original_url, new_name, tag=None):
         gh = Github(token)
         user = gh.get_user()
         new_repo = user.create_repo(new_name, private=True)
-
         repo = Repo(tmp_dir)
-        origin = repo.remotes.origin
-        origin.set_url(new_repo.clone_url.replace("https://", f"https://{token}@"))
 
-        repo.create_remote('new_origin', url=new_repo.clone_url.replace("https://", f"https://{token}@"))
+        if 'new_origin' in [r.name for r in repo.remotes]:
+            new_remote = repo.remotes.new_origin
+            new_remote.set_url(authenticated_url(new_repo.clone_url))
+        else:
+            new_remote = repo.create_remote('new_origin', authenticated_url(new_repo.clone_url))
+
+        print("Pushing all refs to new_origin with --mirror...")
         repo.git.push('--mirror', 'new_origin')
 
         print("Deleting default labels...")
@@ -64,10 +72,14 @@ def duplicate_repo(original_url, new_name, tag=None):
         print("Copying GitHub Actions workflow...")
         workflows_path = os.path.join(tmp_dir, ".github", "workflows")
         os.makedirs(workflows_path, exist_ok=True)
-        shutil.copy("safety.yml", workflows_path)
+        safety_yml_path = os.path.abspath("safety.yml")
+        shutil.copy(safety_yml_path, workflows_path)
+        safety_readme_path = os.path.abspath("CONVENTIONAL-README.md")
+        target_readme_path = os.path.join(tmp_dir, "README.md")
+        shutil.copy(safety_readme_path, target_readme_path)
 
         repo.git.add(A=True)
-        repo.index.commit("Add GitHub Actions workflow")
+        repo.index.commit("feat(Setup/Build): Added the docker build folder as well as the GitHub Actions workflow; also added a basic README")
         repo.git.push('new_origin', 'main')
 
         if tag:
