@@ -24,7 +24,10 @@ pip install -r requirements.txt
 bettergit/
 ├── setup.py
 ├── .env.example
+├── CONVENTIONAL-README.md    # The flexible Readme to copy into the new repository
 ├── safety.yml
+├──/build
+   ├── Dockerfile
 ```
 
 ## Setup
