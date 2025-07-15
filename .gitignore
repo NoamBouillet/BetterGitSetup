@@ -1,1 +1,7 @@
 .env
+.vscode/
+.devcontainer/
+build/*.log
+build/*-cache/
+*.out
+*.o
