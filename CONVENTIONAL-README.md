@@ -23,7 +23,7 @@ project-name
 
 ## Commit Norm
 
-We use a clear and consistent commit norm inspired by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+We use a clear and consistent commit norm inspired by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) :
 
 ```plaintext
 <type>(<field>): <description>
@@ -62,6 +62,6 @@ echo 'How to run it'
 
 Thanks to everyone who contributed:
 
-(Collaborator's Name)[https://github.com/name]  
-(Collaborator's Name)[https://github.com/name]  
-(Collaborator's Name)[https://github.com/name]  
+[Collaborator's Name](https://github.com/name)  
+[Collaborator's Name](https://github.com/name)  
+[Collaborator's Name](https://github.com/name)  
