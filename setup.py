@@ -81,6 +81,11 @@ def duplicate_repo(original_url, new_name, tag=None):
         safety_readme_path = os.path.abspath("CONVENTIONAL-README.md")
         target_readme_path = os.path.join(tmp_dir, "README.md")
         shutil.copy(safety_readme_path, target_readme_path)
+        build_src = os.path.abspath("build")
+        build_dst = os.path.join(tmp_dir, "build")
+        if os.path.exists(build_dst):
+            shutil.rmtree(build_dst)
+        shutil.copytree(build_src, build_dst)
 
         repo.git.add(A=True)
         repo.index.commit("feat(Setup/Build): Added the docker build folder as well as the GitHub Actions workflow; also added a basic README")
