@@ -72,7 +72,7 @@ def duplicate_repo(original_url, new_name, tag=None):
         print("Copying GitHub Actions workflow...")
         workflows_path = os.path.join(tmp_dir, ".github", "workflows")
         os.makedirs(workflows_path, exist_ok=True)
-        safety_yml_path = os.path.abspath("safety.yml")
+        safety_yml_path = os.path.abspath("safety-checks.yml")
         shutil.copy(safety_yml_path, workflows_path)
         safety_readme_path = os.path.abspath("CONVENTIONAL-README.md")
         target_readme_path = os.path.join(tmp_dir, "README.md")

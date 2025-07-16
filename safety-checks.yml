@@ -2,17 +2,12 @@ name: safety
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: [main, dev]
   pull_request:
-    branches:
-      - main
-      - dev
+    branches: [main, dev]
 
 env:
-  MIRROR_URL: ${{ secrets.MIRROR_URL }}
-  EXECUTABLES: ${{ secrets.EXECUTABLES }}
+  MIRROR_URL: https://github.com/The-Repository-To-Copy
 
 permissions:
   contents: read
@@ -29,7 +24,6 @@ jobs:
         run: |
           repo_ssh_url="git@github.com:${{ github.repository }}.git"
           if [[ "$repo_ssh_url" == "${{ env.MIRROR_URL }}" || "${{ github.ref }}" == refs/heads/ga-ignore-* ]]; then
-            echo "Skipping: Mirror repository or ignored branch"
             echo "is_mirror=true" >> $GITHUB_OUTPUT
           else
             echo "is_mirror=false" >> $GITHUB_OUTPUT
@@ -40,7 +34,7 @@ jobs:
     if: needs.check_repo.outputs.is_mirror == 'false'
     runs-on: ubuntu-latest
     container: ghcr.io/epitech/coding-style-checker:latest
-    timeout-minutes: 2
+    timeout-minutes: 3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,19 +54,29 @@ jobs:
           fi
 
   check_program_compilation:
-    runs-on: ubuntu-latest
-    container: epitechcontent/epitest-docker
-    timeout-minutes: 2
     needs: check_coding_style
     if: needs.check_repo.outputs.is_mirror == 'false'
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
+    timeout-minutes: 3
+    env:
+      EXECUTABLES: "executable1,executable2"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Full Clean
+        run: make fclean
       - name: Compile
         run: make
       - name: Clean
         run: make clean
-      - name: Check executables
+      - name: Check leftover executables
+        run: |
+          if find . -type f -perm -111 | grep -q .; then
+            echo "::error::Leftover executable files found after make clean"
+            exit 1
+          fi
+      - name: Check executables exist
         run: |
           IFS=',' read -r -a EXECS <<< "${EXECUTABLES}"
           for exec in "${EXECS[@]}"; do
@@ -83,11 +87,11 @@ jobs:
           done
 
   run_tests:
-    runs-on: ubuntu-latest
-    container: epitechcontent/epitest-docker
-    timeout-minutes: 2
     needs: check_program_compilation
     if: needs.check_repo.outputs.is_mirror == 'false'
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
+    timeout-minutes: 3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -95,9 +99,9 @@ jobs:
         run: make tests_run
 
   push_to_mirror:
-    runs-on: ubuntu-latest
     needs: run_tests
     if: needs.check_repo.outputs.is_mirror == 'false' && github.event_name == 'push'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
