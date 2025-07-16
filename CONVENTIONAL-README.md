@@ -44,6 +44,49 @@ Example:
 feat(Setup/Build): Added the docker build folder as well as the GitHub Actions workflow
 ```
 
+## Branching & Labels
+
+### Issue-Based Branch Naming
+
+Each feature, bugfix, or task starts from a GitHub issue.
+
+When starting work on an issue:
+
+- **Create a new branch directly from the issue page on GitHub**
+- The branch will follow this naming convention:  
+```plaintext
+<issue-number>-<short-title-explaining-the-issue>
+```
+
+Usually, the branch name is made by Github after the title of the issue.
+
+**Examples:**
+
+- `12-nombres-négatifs-pas-de-gestion-d'erreur`
+- `7-implémentation-d'un-algorithme-de-tri`
+- `42-problemes-de-coding-style`
+
+This keeps branches linked to their issues for better traceability.
+
+---
+
+### 🏷️ Labeling Convention
+
+Each issue can be attributed labels to explain what it is about:
+
+| Label           | Description                                  |
+|-----------------|----------------------------------------------|
+| `Bug`           | Something doesn’t work as expected           |
+| `Feature`       | A new functionality to add                   |
+| `Coding Style`  | Coding Style Problems                        |
+| `Tests`         | Add or improve tests                         |
+| `Documentation` | Doc updates or improvements                  |
+| `Refactor`      | Code restructuring without behavior changes  |
+| `Bizarre`       | Something feels weird, needs another look    |
+| `HELP`          | Request for help or collaboration            |
+| `In Progress`   | Currently doing                              |
+| `Performance`   | Upgrading the performance                    |
+
 ## Setup and Running
 
 ### Install the dependencies
