@@ -10,18 +10,20 @@ Brief description of the project (en anglais svp).
 
 ```plaintext
 project-name
-├──build/
-│  └── Dockerfile          # Build using Docker for Ubuntu 24.04 testing
-├──src/
-│  ├── ...                 # Source files
-├──.github/
-│  ├── workflows/          # Github Actions CI/CD
-└──README.md
+├── build/
+│   └── Dockerfile               # Build using Docker for Ubuntu 24.04 testing
+├── src/
+│   └── ...                      # Source files
+├── .github/
+│   └── workflows/
+│       ├── safety-checks.yml    # Pipeline to check if all requirements are there in order to push
+│       └── release.yml          # Pipeline that does versioning by creating releases of the project
+└── README.md
 ```
 
 ## Commit Norm
 
-We use a clear and consistent commit norm inspired by (Conventional Commits)[https://www.conventionalcommits.org/en/v1.0.0/]:
+We use a clear and consistent commit norm inspired by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 
 ```plaintext
 <type>(<field>): <description>
@@ -60,6 +62,6 @@ echo 'How to run it'
 
 Thanks to everyone who contributed:
 
-(Collaborator's Name)[https://github.com/name]
-(Collaborator's Name)[https://github.com/name]
-(Collaborator's Name)[https://github.com/name]
+(Collaborator's Name)[https://github.com/name]  
+(Collaborator's Name)[https://github.com/name]  
+(Collaborator's Name)[https://github.com/name]  

@@ -1,18 +1,20 @@
 # BetterGitSetup
-
-BetterGitSetup is a CLI tool that helps you automate GitHub repository duplication, setup, and lightweight ticketing-like workflows.
+BetterGitSetup is a CLI tool that automates GitHub repository duplication, setup, labeling, protections, and simplified ticket-based workflows.
 
 ## Features
-- Duplicate a GitHub repository (push all branches)
-- Copy collaborators from the original repository automatically
-- Setup GitHub Actions by copying a workflow YAML file
-- Create labels for issue tracking (priority, types, etc.)
-- Add Git tags
-- Protect branches (main, dev) with PR review requirements
+- **Full repo duplication** with all branches and tags
+- **GitHub Actions** workflow (e.g. coding style, compilation, testing)
+- **Automatic label management** (delete defaults, create custom ones)
+- **Branch protection rules** on `main` and `dev`
+- **Release automation** (`.zip` archive from latest commits on main)
 
 ## Requirements
 - Python 3.8+
-- A GitHub **Personal Access Token** (PAT) with `repo`, `admin:repo_hook`, `write:org`, and `workflow` scopes
+- A GitHub **Personal Access Token** (PAT) with the following scopes:
+  - `repo`
+  - `admin:repo_hook`
+  - `workflow`
+  - `write:org`
 
 ## Installation
 ```bash
@@ -24,10 +26,13 @@ pip install -r requirements.txt
 bettergit/
 ├── setup.py
 ├── .env.example
-├── CONVENTIONAL-README.md    # The flexible Readme to copy into the new repository
+├── CONVENTIONAL-README.md
+├── README.md
 ├── safety.yml
-├──/build
-   ├── Dockerfile
+├── release.yml
+├── requirements.txt
+└──/build
+   └── Dockerfile
 ```
 
 ## Setup
@@ -54,7 +59,6 @@ GITHUB_TOKEN=ghp_your_personal_token_here
 ## GitHub Secrets to Set (on the duplicated repo)
 After duplication, make sure to set these secrets in the **new repository's** Settings > Secrets:
 - `GIT_SSH_PRIVATE_KEY` → Your private SSH key (for repo mirroring)
-- (Optional) `EXECUTABLES` → Comma-separated names of executables for the `make` check
 
 ## Usage
 ```bash
